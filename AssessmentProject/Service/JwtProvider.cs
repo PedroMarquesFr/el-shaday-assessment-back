@@ -18,7 +18,7 @@ namespace AssessmentProject.Service
             {
                 Subject = AddClaims(person),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Settings.Secret)), SecurityAlgorithms.HmacSha256Signature),
-                Expires = DateTime.UtcNow.AddHours(20)
+                Expires = DateTime.UtcNow.AddHours(8)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

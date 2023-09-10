@@ -10,5 +10,6 @@ public interface IPersonRepository
     public Task<Person?> Get(Guid PersonId);
     public Task<IEnumerable<Person>> GetAll();
     public Task<Person?> GetByEmail(string email);
+    public Task<Person?> GetByDocument(string document);
 
 }

@@ -79,7 +79,7 @@ namespace AssessmentProject.Service.Api.Controllers
             }
         }
         [Authorize(Policy = "AdminOnly")]
-        [HttpPut("Deactivate/:personId", Name = "Deactivate Person")]
+        [HttpPut("Deactivate", Name = "Deactivate Person")]
         [Produces("application/json")]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.Created, type: typeof(PersonDto))]
         public async Task<IActionResult> DeactivatePerson(Guid personId)
@@ -88,7 +88,26 @@ namespace AssessmentProject.Service.Api.Controllers
             {
                 await _personService.DeactivatePerson(personId);
                 return StatusCode(
-                    statusCode: (int)HttpStatusCode.OK);
+                    statusCode: (int)HttpStatusCode.OK, value: $"Person Deactivated");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(
+                    statusCode: (int)HttpStatusCode.BadRequest,
+                    value: $"Bad request message: {ex.Message}");
+            }
+        }
+        [Authorize(Policy = "AdminOnly")]
+        [HttpPut("Activate", Name = "Activate Person")]
+        [Produces("application/json")]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.Created, type: typeof(PersonDto))]
+        public async Task<IActionResult> ActivatePerson(Guid personId)
+        {
+            try
+            {
+                await _personService.ActivatePerson(personId);
+                return StatusCode(
+                    statusCode: (int)HttpStatusCode.OK, value: $"Person Activated");
             }
             catch (Exception ex)
             {
@@ -106,6 +125,27 @@ namespace AssessmentProject.Service.Api.Controllers
             try
             {
                 var persons = await _personService.GetPersons();
+                return StatusCode(
+                    statusCode: (int)HttpStatusCode.OK,
+                    value: persons
+                    );
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(
+                    statusCode: (int)HttpStatusCode.BadRequest,
+                    value: $"Bad request message: {ex.Message}");
+            }
+        }
+        [Authorize(Policy = "AdminOnly")]
+        [HttpGet("", Name = "Get Person By Id")]
+        [Produces("application/json")]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK, type: typeof(PersonDto))]
+        public async Task<IActionResult> Person(Guid personid)
+        {
+            try
+            {
+                var persons = await _personService.GetPerson(personid);
                 return StatusCode(
                     statusCode: (int)HttpStatusCode.OK,
                     value: persons

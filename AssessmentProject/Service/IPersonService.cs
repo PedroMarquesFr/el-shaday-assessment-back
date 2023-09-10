@@ -7,6 +7,7 @@ namespace AssessmentProject.Service
     {
         public Task<Person> CreatePerson(PersonDto user);
         public Task DeactivatePerson(Guid id);
+        public Task ActivatePerson(Guid id);
         public Task<Person> UpdatePerson(PersonWithIdDto user);
         public Task<Person?> GetPerson(Guid PersonId);
         public Task<IEnumerable<Person?>> GetPersons();

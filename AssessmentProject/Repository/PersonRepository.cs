@@ -54,4 +54,10 @@ public class PersonRepository : IPersonRepository
         return user;
     }
 
+    public async Task<Person?> GetByDocument(string document)
+    {
+        var user = await _context.Person.AsNoTracking().FirstOrDefaultAsync(a => a.Document == document);
+        return user;
+    }
+
 }

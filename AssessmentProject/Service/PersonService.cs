@@ -19,8 +19,11 @@ namespace AssessmentProject.Service
         {
             if (user == null) throw new Exception("Person not defined.");
 
-            //var existingPerson = await _personRepository.Get(person.Id);
-            //if (existingPerson == null) throw new Exception("Person doenst exist.");
+            var isEmailRegistered = await _personRepository.GetByEmail(user.Email);
+            var isDocumentRegistered = await _personRepository.GetByDocument(user.Document);
+
+            if (isEmailRegistered != null) throw new Exception("Person's Email already registered.");
+            if (isDocumentRegistered != null) throw new Exception("Person's Document already registered.");
 
             var personEntity = new Person
             {
@@ -34,9 +37,9 @@ namespace AssessmentProject.Service
                 RoleId = (int)user.Role,
                 QualificationId = (int)user.Qualification,
                 PersonAddress = user.EnderecoCadastro,
-                IsActivated = user.IsActivated,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
+                IsActivated = true,
+                CreatedAt = DateTime.UtcNow.ToUniversalTime(),
+                UpdatedAt = DateTime.UtcNow.ToUniversalTime(),
             };
             return await _personRepository.Add(personEntity);
         }
@@ -46,9 +49,21 @@ namespace AssessmentProject.Service
 
             var existingPerson = await _personRepository.Get(id);
 
-            if (existingPerson == null) throw new Exception("Person doenst exist.");
+            if (existingPerson == null) throw new Exception("Person doesn't exists.");
 
             existingPerson.IsActivated = false;
+
+            await _personRepository.Update(existingPerson);
+            return;
+        }
+        public async Task ActivatePerson(Guid id)
+        {
+
+            var existingPerson = await _personRepository.Get(id);
+
+            if (existingPerson == null) throw new Exception("Person doesn't exists.");
+
+            existingPerson.IsActivated = true;
 
             await _personRepository.Update(existingPerson);
             return;
@@ -79,7 +94,7 @@ namespace AssessmentProject.Service
                 PersonAddress = person.EnderecoCadastro,
                 IsActivated = person.IsActivated,
                 CreatedAt = existingPerson.CreatedAt,
-                UpdatedAt = DateTime.Now,
+                UpdatedAt = DateTime.UtcNow.ToUniversalTime(),
             };
 
             var newPerson = await _personRepository.Update(personEntity);
@@ -88,7 +103,9 @@ namespace AssessmentProject.Service
 
         public async Task<Person?> GetPerson(Guid PersonId)
         {
-            return await _personRepository.Get(PersonId);
+            var person = await _personRepository.Get(PersonId);
+            if (person == null) throw new Exception("Person not found");
+            return person;
         }
 
         public async Task<IEnumerable<Person?>> GetPersons()
@@ -100,6 +117,7 @@ namespace AssessmentProject.Service
         {
             var person = await _personRepository.GetByEmail(loginData.Email);
             if(person == null) throw new Exception("Person not Registered.");
+            if (!person.IsActivated) throw new Exception("Person not Activated.");
             if (person.Password != loginData.Password) throw new Exception("Incorrect password.");
 
             return _jwtProvider.Generate(person);
