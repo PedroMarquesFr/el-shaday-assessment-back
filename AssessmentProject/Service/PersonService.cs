@@ -50,6 +50,7 @@ namespace AssessmentProject.Service
             var existingPerson = await _personRepository.Get(id);
 
             if (existingPerson == null) throw new Exception("Person doesn't exists.");
+            if (existingPerson.Email == "admin@admin.com") throw new Exception("Cant deactivate main admin.");
 
             existingPerson.IsActivated = false;
 
