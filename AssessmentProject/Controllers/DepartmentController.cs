@@ -24,6 +24,7 @@ namespace AssessmentProject.Service.Api.Controllers
             _logger = logger;
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost("Create", Name = "Create Department")]
         [Produces("application/json")]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.Created, type: typeof(Department))]
@@ -42,6 +43,7 @@ namespace AssessmentProject.Service.Api.Controllers
             }
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpDelete("Delete/{departmentId}", Name = "Delete Department")]
         [Produces("application/json")]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.OK)]
@@ -76,6 +78,7 @@ namespace AssessmentProject.Service.Api.Controllers
             }
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("GetAllDepartments", Name = "Get All Departments")]
         [Produces("application/json")]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.OK, type: typeof(IEnumerable<Department>))]
