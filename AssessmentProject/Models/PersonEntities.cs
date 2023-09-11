@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AssessmentProject.Models
 {
@@ -48,7 +49,9 @@ namespace AssessmentProject.Models
     public class Department
     {
         public Guid Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public Guid PersonId { get; set; }
         public Person Person { get; set; }
         public DateTime? CreatedAt { get; set; }

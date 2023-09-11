@@ -8,5 +8,6 @@ namespace AssessmentProject.Repository
         public Task Delete(Guid departmentId);
         public Task<IEnumerable<Department>> GetAll();
         public Task<IEnumerable<Department?>> GetByPerson(Guid personId);
+        public Task<Department?> GetByName(string name);
     }
 }

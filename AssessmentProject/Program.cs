@@ -17,6 +17,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<ApplicationDbContext>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

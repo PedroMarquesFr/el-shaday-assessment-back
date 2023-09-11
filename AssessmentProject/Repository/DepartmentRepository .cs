@@ -33,6 +33,13 @@ namespace AssessmentProject.Repository
             }
         }
 
+        public async Task<Department?> GetByName(string name)
+        {
+            return await _context.Departments
+                .Where(d => d.Name == name)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Department>> GetAll()
         {
             return await _context.Departments.ToListAsync();
